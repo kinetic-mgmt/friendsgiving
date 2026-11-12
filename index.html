@@ -38,6 +38,9 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
+/* Fast taps on the counters must count, not zoom the page. */
+html, button, a, .chip, .stepper { touch-action: manipulation; }
+button, .chip, .stepper, .send { -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
 body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
 .wrap { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .stripe { display: grid; grid-template-columns: repeat(6, 1fr); height: 8px; }
