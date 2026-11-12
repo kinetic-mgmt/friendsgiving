@@ -139,6 +139,8 @@ h2 { font-family: var(--display); font-weight: 400; color: var(--cranberry); fon
 .stepper { display: flex; align-items: center; gap: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; }
 .stepper span.n { font-family: var(--display); font-size: 30px; min-width: 1.6ch; text-align: center; font-variant-numeric: tabular-nums; }
 .stepper button { font: inherit; font-size: 22px; font-weight: 700; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; }
+.stepper button:disabled { opacity: .35; cursor: not-allowed; }
+.cap { margin-top: 10px; font-weight: 600; }
 .stepper .what { font-weight: 600; min-width: 60px; }
 .summary { background: var(--panel); border: 1px dashed var(--line); border-radius: 14px; padding: 16px 18px; color: var(--muted); }
 .summary strong { color: var(--fg); }
@@ -238,6 +240,7 @@ footer .sign { font-family: var(--script); font-size: 30px; color: var(--pumpkin
           <div class="stepper"><span class="what">Adults</span><button type="button" id="a-dn" aria-label="One fewer adult">−</button><span class="n" id="a-n" aria-live="polite">2</span><button type="button" id="a-up" aria-label="One more adult">+</button></div>
           <div class="stepper"><span class="what">Kids</span><button type="button" id="k-dn" aria-label="One fewer kid">−</button><span class="n" id="k-n" aria-live="polite">0</span><button type="button" id="k-up" aria-label="One more kid">+</button></div>
         </div>
+        <p class="note cap" id="cap" aria-live="polite"></p>
       </div>
       <div class="summary" id="summary">Pick your household to see what you're bringing.</div>
       <div>
@@ -284,6 +287,9 @@ document.getElementById("houses").innerHTML = guests.map(h =>
   `<button type="button" class="chip" id="house-${h.id}" data-house="${h.id}" aria-pressed="false" style="--c: var(--${h.color})">${esc(h.who)}</button>`).join("");
 
 const st = { house: null, ans: null, a: 2, k: 0 };
+// Most people each household can bring, adults and kids together.
+const MAX = {"asha": 5, "leslie-shane": 4, "melanie-gaige": 6, "sienna": 3, "brittany": 6};
+const maxFor = () => MAX[st.house] ?? 6;
 const QUIPS = {
   yes: [
     "Great choice. Wear stretchy pants. This is five courses times six states.",
@@ -307,6 +313,11 @@ function render() {
   document.querySelectorAll("[data-house]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.house === st.house)));
   document.querySelectorAll("[data-ans]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ans === st.ans)));
   $("a-n").textContent = st.a; $("k-n").textContent = st.k;
+  const full = st.a + st.k >= maxFor();
+  $("a-up").disabled = full; $("k-up").disabled = full;
+  $("cap").textContent = !st.house ? "" : full
+    ? `That's your max of ${maxFor()}. The turkey has limits.`
+    : `Up to ${maxFor()} people for your household.`;
   $("count-block").hidden = st.ans === "no";
   const h = H.find(x => x.id === st.house);
   if (h) {
@@ -325,16 +336,20 @@ function render() {
 }
 document.addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
-  if (b.dataset.house) st.house = b.dataset.house;
+  if (b.dataset.house) {
+    st.house = b.dataset.house;
+    const m = maxFor();
+    while (st.a + st.k > m) { if (st.k > 0) st.k--; else st.a--; }
+  }
   if (b.dataset.ans) {
     st.ans = b.dataset.ans;
     const pick = QUIPS[st.ans][Math.floor(Math.random() * QUIPS[st.ans].length)];
     $("quip").textContent = pick;
     $("quip").hidden = false;
   }
-  if (b.id === "a-up") st.a = Math.min(12, st.a + 1);
+  if (b.id === "a-up" && st.a + st.k < maxFor()) st.a++;
   if (b.id === "a-dn") st.a = Math.max(0, st.a - 1);
-  if (b.id === "k-up") st.k = Math.min(12, st.k + 1);
+  if (b.id === "k-up" && st.a + st.k < maxFor()) st.k++;
   if (b.id === "k-dn") st.k = Math.max(0, st.k - 1);
   render();
 });
