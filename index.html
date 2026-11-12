@@ -90,6 +90,8 @@ h2 { font-family: var(--display); font-weight: 400; color: var(--cranberry); fon
 .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .rule { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; min-width: 0; }
 .rule h3 { margin: 0 0 4px; font-size: 17px; color: var(--pumpkin); }
+.rule.allergy { border: 2px solid var(--cranberry); }
+.rule.allergy h3 { color: var(--cranberry); }
 .rule p { margin: 0; color: var(--muted); font-size: 15px; }
 
 .plates { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(290px, 100%), 1fr)); gap: 18px; }
@@ -218,6 +220,7 @@ footer .sign { font-family: var(--script); font-size: 30px; color: var(--pumpkin
   <div class="rules">
     <div class="rule"><h3>Wear your color</h3><p>Show up in the wrong color and you wear a paper turkey hat all night.</p></div>
     <div class="rule"><h3>Bring your state</h3><p>Five dishes from your state, plus a board or card game for the group.</p></div>
+    <div class="rule allergy"><h3>No shellfish. Anywhere.</h3><p>There is a serious allergy in our group. No shrimp, crab, crawfish, clams, lobster or anything with a shell, in any dish or sauce.</p></div>
     <div class="rule"><h3>Win a ribbon</h3><p>Prizes for best dish and best dressed. Judging happens after dessert.</p></div>
   </div>
 </section>
@@ -282,10 +285,10 @@ footer .sign { font-family: var(--script); font-size: 30px; color: var(--pumpkin
 <script>
 const ENDPOINT = "https://anmatvjnskcbgsosxwol.supabase.co/functions/v1/friendsgiving-rsvp";
 const H = [
-  { id: "asha", who: "Asha, Darren & Family", state: "Louisiana", region: "The South", color: "purple", drink: "Hurricanes", app: "Crawfish dip", entree: "Turkey", side: "Corn maque choux", dessert: "Beignets" },
+  { id: "asha", who: "Asha, Darren & Family", state: "Louisiana", region: "The South", color: "purple", drink: "Hurricanes", app: "Fried green tomatoes", entree: "Turkey", side: "Corn maque choux", dessert: "Beignets" },
   { id: "rogers", host: true, who: "Craig, Mason & Sutton", state: "Wisconsin + Ohio", region: "The Midwest", color: "red", drink: "Apple cider bar, martinis, vodka sodas and kids drinks", app: "Cheese curds", entree: "Chicken paprikash", side: "Mac and cheese", dessert: "Buckeyes and pumpkin pie" },
   { id: "leslie-shane", who: "Leslie & Shane", state: "Idaho", region: "The Mountain West", color: "orange", drink: "Old fashioneds", app: "Loaded potato skins", entree: "Huckleberry glazed chicken", side: "Mashed potatoes and gravy", dessert: "Huckleberry pie" },
-  { id: "melanie-gaige", who: "Melanie, Gaige & Family", state: "Massachusetts", region: "New England", color: "green", drink: "Cape Codders", app: "Clam chowder cups", entree: "Baked Boston cod", side: "Cranberry sauce and Parker House rolls", dessert: "Boston cream pie" },
+  { id: "melanie-gaige", who: "Melanie, Gaige & Family", state: "Massachusetts", region: "New England", color: "green", drink: "Cape Codders", app: "Corn chowder cups", entree: "Baked Boston cod", side: "Cranberry sauce and Parker House rolls", dessert: "Boston cream pie" },
   { id: "sienna", who: "Sienna", state: "California", region: "The West Coast", color: "yellow", drink: "California red wine", app: "Guacamole and chips", entree: "Fish tacos", side: "Cobb salad", dessert: "Rocky road brownies" },
   { id: "brittany", who: "Brittany & Family", state: "Texas", region: "The Southwest", color: "blue", drink: "Shiner Bock beer", app: "Queso dip", entree: "Chicken enchiladas", side: "Jalapeño cornbread", dessert: "Texas pecan pie" },
 ];
