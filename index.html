@@ -205,7 +205,7 @@ footer .sign { font-family: var(--script); font-size: 30px; color: var(--pumpkin
   <header class="hero wrap">
     <div class="eyebrow">Gather round, y'all</div>
     <h1>Friendsgiving<span class="sub-h">Across America</span></h1>
-    <p class="lede">Five households, five corners of the country, one very full table. Every household brings a drink, app, entree, side and dessert from their state, plus a board or card game. Wear your state color.</p>
+    <p class="lede">Six households, six corners of the country, one very full table. Every household brings a drink, app, entree, side and dessert from their state, plus a board or card game. Wear your state color.</p>
     <div class="facts">
       <div class="fact"><small>When</small><strong>Sun, Nov 29</strong></div>
       <div class="fact"><small>Time</small><strong>1 PM</strong></div>
@@ -291,6 +291,7 @@ const H = [
   { id: "leslie-shane", who: "Leslie & Shane", state: "Idaho", region: "The Mountain West", color: "orange", drink: "Old fashioneds", app: "Loaded potato skins", entree: "Huckleberry glazed chicken", side: "Mashed potatoes and gravy", dessert: "Huckleberry pie" },
   { id: "melanie-gaige", who: "Melanie, Gaige & Family", state: "Massachusetts", region: "New England", color: "green", drink: "Cape Codders", app: "Corn chowder cups", entree: "Chicken pot pie", side: "Cranberry sauce and Parker House rolls", dessert: "Boston cream pie" },
   { id: "sienna", who: "Sienna", state: "California", region: "The West Coast", color: "yellow", drink: "California red wine", app: "Guacamole and chips", entree: "Turkey avocado club sliders", side: "Cobb salad", dessert: "Rocky road brownies" },
+  { id: "gregus", who: "Mike, Stefanie & Family", state: "Texas", region: "The Southwest", color: "blue", drink: "Shiner Bock beer", app: "Queso dip", entree: "Chicken enchiladas", side: "Jalapeño cornbread", dessert: "Texas pecan pie" },
 ];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const rows = h => [["Drink", h.drink], ["App", h.app], ["Entree", h.entree], ["Side", h.side], ["Dessert", h.dessert], ["Game", "A board or card game"]]
@@ -311,7 +312,7 @@ document.getElementById("houses").innerHTML = guests.map(h =>
 
 const st = { house: null, who: null, ans: null, a: 2, k: 0 };
 // Most people each household can bring, adults and kids together.
-const MAX = {"asha": 5, "leslie-shane": 4, "melanie-gaige": 6, "sienna": 3, "brittany": 6};
+const MAX = {"asha": 5, "leslie-shane": 4, "melanie-gaige": 6, "sienna": 3, "gregus": 6};
 const maxFor = () => MAX[st.house] ?? 6;
 const QUIPS = {
   yes: [
@@ -332,7 +333,7 @@ const QUIPS = {
 };
 const $ = id => document.getElementById(id);
 // Who can answer for each household. The RSVP sends an index into this list, never typed text.
-const PEOPLE = { "asha": ["Asha", "Darren"], "leslie-shane": ["Leslie", "Shane"], "melanie-gaige": ["Melanie", "Gaige"], "sienna": ["Sienna"], "brittany": ["Brittany", "Someone in Brittany's family"] };
+const PEOPLE = { "asha": ["Asha", "Darren"], "leslie-shane": ["Leslie", "Shane"], "melanie-gaige": ["Melanie", "Gaige"], "sienna": ["Sienna"], "gregus": ["Mike", "Stefanie"] };
 const ANSWER = { yes: "Count us in", maybe: "Maybe", no: "Can't make it" };
 let CLAIMS = {};
 async function loadClaims() {
