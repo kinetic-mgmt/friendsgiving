@@ -105,6 +105,7 @@ h2 { font-family: var(--display); font-weight: 400; color: var(--cranberry); fon
 .plate dl { margin: 0; padding: 0 18px; display: grid; grid-template-columns: 76px 1fr; gap: 7px 12px; }
 .plate dt { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 700; padding-top: 3px; }
 .plate dd { margin: 0; font-size: 15.5px; min-width: 0; }
+.plate .swap { margin: 12px 18px 0; padding-top: 10px; border-top: 1px dashed var(--line); color: var(--muted); font-size: 13px; font-style: italic; }
 .plate.host { --sc: 1; z-index: 2; border-width: 4px; box-shadow: 0 0 0 5px var(--mustard), 0 16px 34px rgba(140, 35, 39, .28); }
 .plate.host .who { font-size: 34px; }
 .plate.host .top { font-size: 15px; }
@@ -205,7 +206,7 @@ footer .sign { font-family: var(--script); font-size: 30px; color: var(--pumpkin
   <header class="hero wrap">
     <div class="eyebrow">Gather round, y'all</div>
     <h1>Friendsgiving<span class="sub-h">Across America</span></h1>
-    <p class="lede">Six households, six corners of the country, one very full table. Every household brings a drink, app, entree, side and dessert from their state, plus a board or card game. Wear your state color.</p>
+    <p class="lede">Five households, five corners of the country, one very full table. Every household brings a drink, app, entree, side and dessert from their state, plus a board or card game. Wear your state color.</p>
     <div class="facts">
       <div class="fact"><small>When</small><strong>Sun, Nov 29</strong></div>
       <div class="fact"><small>Time</small><strong>1 PM</strong></div>
@@ -220,7 +221,7 @@ footer .sign { font-family: var(--script); font-size: 30px; color: var(--pumpkin
   <h2 id="rules-h">House rules</h2>
   <div class="rules">
     <div class="rule"><h3>Wear your color</h3><p>Show up in the wrong color and you wear a paper turkey hat all night.</p></div>
-    <div class="rule"><h3>Bring your state</h3><p>The dishes below are just ideas. Swap anything you like, as long as it is from your state. Plus a board or card game for the group.</p></div>
+    <div class="rule"><h3>Bring your state</h3><p>Every dish listed is a suggestion, nothing more. Swap any of it for something you would rather make, as long as it comes from your state. Plus a board or card game for the group.</p></div>
     <div class="rule allergy"><h3>No fish or shellfish. Anywhere.</h3><p>There is a serious allergy in our group. No fish, shrimp, crab, crawfish, clams, lobster or anything from the sea, in any dish or sauce.</p></div>
     <div class="rule"><h3>Win a ribbon</h3><p>Prizes for best dish and best dressed. Judging happens after dessert.</p></div>
   </div>
@@ -229,7 +230,7 @@ footer .sign { font-family: var(--script); font-size: 30px; color: var(--pumpkin
 <section class="wrap" aria-labelledby="menu-h">
   <div class="kicker">Pass the plates</div>
   <h2 id="menu-h">Who brings what</h2>
-  <p class="sub">Find your plate. That's your state and your color. The menu is a suggestion, so make it yours.</p>
+  <p class="sub">Find your plate. That's your state and your color. Everything below is only a suggestion. Swap any of it for whatever you feel like cooking, as long as it comes from your state.</p>
   <div class="plates" id="plates"></div>
 </section>
 
@@ -291,7 +292,6 @@ const H = [
   { id: "leslie-shane", who: "Leslie & Shane", state: "Idaho", region: "The Mountain West", color: "orange", drink: "Old fashioneds", app: "Loaded potato skins", entree: "Huckleberry glazed chicken", side: "Mashed potatoes and gravy", dessert: "Huckleberry pie" },
   { id: "melanie-gaige", who: "Melanie, Gaige & Family", state: "Massachusetts", region: "New England", color: "green", drink: "Cape Codders", app: "Corn chowder cups", entree: "Chicken pot pie", side: "Cranberry sauce and Parker House rolls", dessert: "Boston cream pie" },
   { id: "sienna", who: "Sienna", state: "California", region: "The West Coast", color: "yellow", drink: "California red wine", app: "Guacamole and chips", entree: "Turkey avocado club sliders", side: "Cobb salad", dessert: "Rocky road brownies" },
-  { id: "gregus", who: "Mike, Stefanie & Family", state: "Texas", region: "The Southwest", color: "blue", drink: "Shiner Bock beer", app: "Queso dip", entree: "Chicken enchiladas", side: "Jalapeño cornbread", dessert: "Texas pecan pie" },
 ];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const rows = h => [["Drink", h.drink], ["App", h.app], ["Entree", h.entree], ["Side", h.side], ["Dessert", h.dessert], ["Game", "A board or card game"]]
@@ -304,6 +304,7 @@ document.getElementById("plates").innerHTML = H.map(h => `
     <div class="who">${esc(h.who)}</div>
     <div class="wear"><i></i> Wear ${h.color}</div>
     <dl>${rows(h)}</dl>
+    <p class="swap">All suggestions. Swap anything for another dish from ${esc(h.state)}.</p>
   </article>`).join("");
 
 const guests = H.filter(h => !h.host);
@@ -312,11 +313,11 @@ document.getElementById("houses").innerHTML = guests.map(h =>
 
 const st = { house: null, who: null, ans: null, a: 2, k: 0 };
 // Most people each household can bring, adults and kids together.
-const MAX = {"asha": 5, "leslie-shane": 4, "melanie-gaige": 6, "sienna": 3, "gregus": 6};
+const MAX = {"asha": 5, "leslie-shane": 4, "melanie-gaige": 6, "sienna": 3};
 const maxFor = () => MAX[st.house] ?? 6;
 const QUIPS = {
   yes: [
-    "Great choice. Wear stretchy pants. This is five courses times six states.",
+    "Great choice. Wear stretchy pants. This is five courses times five states.",
     "The turkey has been told you're coming. He's thrilled. Well, he would be.",
     "Yes! Skip breakfast. Maybe skip Saturday too.",
   ],
@@ -333,7 +334,7 @@ const QUIPS = {
 };
 const $ = id => document.getElementById(id);
 // Who can answer for each household. The RSVP sends an index into this list, never typed text.
-const PEOPLE = { "asha": ["Asha", "Darren"], "leslie-shane": ["Leslie", "Shane"], "melanie-gaige": ["Melanie", "Gaige"], "sienna": ["Sienna"], "gregus": ["Mike", "Stefanie"] };
+const PEOPLE = { "asha": ["Asha", "Darren"], "leslie-shane": ["Leslie", "Shane"], "melanie-gaige": ["Melanie", "Gaige"], "sienna": ["Sienna"] };
 const ANSWER = { yes: "Count us in", maybe: "Maybe", no: "Can't make it" };
 let CLAIMS = {};
 async function loadClaims() {
